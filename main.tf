@@ -11,6 +11,7 @@ variable env_prefix {}
 variable my_ip {}
 variable instance_type {}
 variable public_key_file_location {}
+variable private_key_file_location {}
 
 
 # Creating VPC
@@ -196,10 +197,34 @@ resource "aws_instance" "myapp-ec2" {
   
               EOF*/
 
-  user_data = file("user_data_bootstrap.sh")
+  #user_data = file("user_data_bootstrap.sh")
 
-#This ensures that everytime that user data bootstrap is modified the EC2 is destroyed and recreated 
-user_data_replace_on_change = true
+  #This ensures that everytime that user data bootstrap is modified the EC2 is destroyed and recreated 
+  user_data_replace_on_change = true
+
+  #Provisioners invokes script on a remote resource after it's created. When using provisioners we must specify the connection details
+  #SSH connection details to remote server
+  connection {
+    type = "ssh"
+    host = self.public_ip
+    user = "ec2-user"
+    private_key = file(var.private_key_file_location)
+  }
+
+  #Copying file to remote server before execution. If we want to copy the file to multiple servers at the same time we add another provisioner and inside we add the new connection block
+  provisioner "file" {
+    source = "entry-script.sh"
+    destination = "/home/ec2-user/entry-script-on-ec2.sh"
+  }
+
+  provisioner "remote-exec" {
+
+    #As the script does not exist in the server we must copy it before executing the script. Inline must have the absolute path
+    #inline = ["/home/ec2-user/entry-script-on-ec2.sh"]
+
+    #Cleaner way to execute the script, all done in one command
+    script = "entry-script.sh"
+  }
 }
 
 output "ec2_public_ip"{
