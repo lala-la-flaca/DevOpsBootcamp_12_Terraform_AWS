@@ -1,93 +1,455 @@
-# DevOpsBootcamp_12_Terraform_AWS
+# TERRAFORM
+## 📦 Demo 1
+This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**. It shows how to use **Terraform** to automate the provisioning of **AWS infrastructure**, including a **VPC**, **subnets**, **EC2 instance**, **security groups**, and more.
+[GitLab Repo](https://gitlab.com/devopsbootcamp4095512/devopsbootcamp_8_jenkins_pipeline/-/tree/complete_pipeline_EKS_ECR/java-maven-app?ref_type=heads)
+
+## 📌 Objective
+- Automate the AWS infrastructure using Infrastructure as Code (IaC)
+- Configure Terraform Script to automate deploying Docker Container to EC2
+
+
+## 🚀 Technologies Used
+
+- **Terraform**: Infrastructure as Code Tool for managing cloud resources.
+- **AWS**: Cloud Provider
+- **EC2**: Intance on AWS
+- **VPC**: Virtual Private Cloud for networking.
+- **IAM**: Manage permissions for AWS resources.
+  
+   
+## 📋 Prerequisites
+- Ensure you have an AWS Account.
+  
+## 🎯 Features
+- Install Terraform
+- Create Terraform project to automate provisioning AWS infrastructure: EC2, VPC, subnets, Route Table, Internet gateway, Security Group
+- Configure the TF script to automate deploying a Docker container to EC2
+  
+       
+## 🏗 Project Architecture
 
 
 
-## Getting started
+## ⚙️ Project Configuration
+### Installing Terraform and Setting Up the Project
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+1. Install Terraform:
+   Follow the Terraform installation guide for your operating system.
+   [Install Terraform](https://developer.hashicorp.com/terraform/install)
+  
+2. Create the Project Folder
+   Create a new folder for your Terraform project and navigate into it.
+   
+3. Install VS Code Terraform Extension
+   Open the project in VS Code and install the official Terraform extension for syntax support.
+   
+4. Create the providers.tf File
+   Define the required provider for AWS:
+   ```bash
+       terraform {
+      required_providers {
+        aws = {
+          source  = "hashicorp/aws"
+          version = "6.3.0"
+        }
+      }
+    }
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+   ```
+5. Create the main.tf File
+   Add the AWS provider configuration (access keys hardcoded for demo purposes only):
+   ```bash
+     provider "aws" {
+        region     = "us-east-2"
+        access_key = "xxxxx"
+        secret_key = "xxxxxx"
+     }
+   ```
+6. Initialize Terraform:
+      Run the following command to download provider plugins and initialize the working directory:
+      ```bash
+      terraform init
+      ```
+7. Create a VPC Resource.
+     ```bash
+       resource "aws_vpc" "dev-vpc" {
+         cidr_block = "10.0.0.0/16"
+       }    
+     ```
+     <img src="" width=800 />
+     
+8. Add a Subnet Resource.
+   ```bash
+     resource "aws_subnet" "myapp-subnet-1" {
+        vpc_id = aws_vpc.dev-vpc.id
+        cidr_block = "10.0.10.0/24"
+        availability_zone = "us-east-2a"   
+    }     
+   ```
+   <img src="" width=800 />
+     
+9. Apply Infrastructure.
+    ```bash
+      terraform plan
+      terraform apply
+    ```
+    <img src="" width=800 />
+     
+10. Verify on AWS Console:
+    Confirm that the VPC and subnet have been created.
+ 
+    <img src="" width=800 />
+      
+11. Add Subnet to the default VPC:
+    ```bash
+      data "aws_vpc" "existing_vpc" {
+        default = true
+      }
+  
+      resource "aws_subnet" "dev-subnet-2"{
+        vpc_id = data.aws_vpc.existing_vpc.id
+        cidr_block = "172.31.48.0/20"
+        availability_zone = "us-east-2a"  
+      }    
+    ```
+    <img src="" width=800 />
+      
+12. Add Tags to Resources
+    VPC:
+      ```bash
+        resource "aws_vpc" "dev-vpc" {
+          cidr_block = "10.0.0.0/16"
+          tags = {
+            Name: "dev-vpc"
+            vpc_env: "dev"         
+          }    
+        }
+    ```
+    Subnet:
+    ```bash
+      resource "aws_subnet" "myapp-subnet-1" {
+        vpc_id = aws_vpc.dev-vpc.id
+        cidr_block = "10.0.10.0/24"
+        availability_zone = "us-east-2a"
+        tags = {
+          Name: "subnet-dev-1"         
+        }      
+    }
+    ```
+    Default VPC and Subnet2:
+    ```bash
+      data "aws_vpc" "existing_vpc" {
+        default = true
+      }
+  
+      resource "aws_subnet" "dev-subnet-2"{
+        vpc_id = data.aws_vpc.existing_vpc.id
+        cidr_block = "172.31.48.0/20"
+        availability_zone = "us-east-2a"
+        tags = {
+          Name: "subnet-default-3"        
+        }    
+      }
+    ```
+    <img src="" width=800 />
+      
+13. Apply the New Configuration
+      ```bash
+        terraform plan
+        terraform apply
+      ```
+  
+14. Destroy a Specific Resource
+      ```bash
+      terraform destroy -target aws_subnet.dev-subnet-2
+      ```
+      <img src="" width=800 />
+      
+15. Destroy All Resources
+      ```bash
+      terraform destroy
+      ```
+      <img src="" width=800 />
+16. Clean Up the Project
 
-## Add your files
+17. Add a .gitignore file
+      ```bash
+        # Local terraform directory
+        .terraform/*
+        
+        #Terraform state
+        *.tfstate
+        *.tfstate.*
+        
+        #Terraform variables for each user. Every user must have their tvars file copy locally, as this file may include sensitive data
+        *tfvars
+      ```
+      
+      <img src="" width=800 />
+      
+  18. Add a terraform.tfvars File:
+      This file stores reusable variable values:
+      ```bash
+        avail_zone = "us-east-2a"
+        vpc_cidr_block = "10.0.0.0/16"
+        subnet_cidr_block = "10.0.10.0/24"
+        env_prefix = "dev"
+      ```
+      <img src="" width=800 />
+      
+  19. Declare Variables in the main.tf file
+      ```bash
+        #Variables
+        variable avail_zone {}
+        variable vpc_cidr_block { }
+        variable subnet_cidr_block { }
+        variable env_prefix {}
+      ```
+      <img src="" width=800 />
+      
+  20. Use Variables in Resource Definitions:
+      Update the VPC and subnet blocks to use variables.
+      VPC:
+      ```bash
+        resource "aws_vpc" "dev-vpc" {
+          cidr_block = var.vpc_cidr_block
+          tags = {
+            Name: "${env_prefix}-vpc"
+            vpc_env: var.env_prefix        
+          }    
+        }
+      ```
+      Subnet:
+      ```bash
+        resource "aws_subnet" "myapp-subnet-1" {
+          vpc_id = aws_vpc.dev-vpc.id
+          cidr_block = var.subnet_cidr_block
+          availability_zone = var.avail_zone
+          tags = {
+            Name: "${env_prefix}-subnet"         
+          }      
+        }      
+      ```
+      <img src="" width=800 />
+      
+  21. Create an Internet Gateway
+      ```bash
+        #Creating Internet Gateway
+          resource "aws_internet_gateway" "myapp-igw" {
+            vpc_id = aws_vpc.myapp-vpc.id
+    
+            tags = {
+              Name: "Internet Gateway"
+            }
+          }      
+      ```
+      <img src="" width=800 />
+      
+  22. Add a Route Table
+      ```bash
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+       #Creating Routing Table
+            resource "aws_route_table" "myapp-route-table"{
+              vpc_id = aws_vpc.myapp-vpc.id
+            
+              #Define each Route
+              route {
+                cidr_block = "0.0.0.0/0"
+                gateway_id = aws_internet_gateway.myapp-igw.id
+              }
+            
+              tags = {
+                Name: "${var.env_prefix}-rtb"
+              }
+      
+          }
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/devopsbootcamp4095512/devopsbootcamp_12_terraform_aws.git
-git branch -M main
-git push -uf origin main
-```
+      ```
+      <img src="" width=800 />
+      
+  23. Associate the Route Table with the Subnet
+      ```bash
+        #Associating subnets with the routing table.
+        resource "aws_route_table_association" "a-rtb-subnet"{
+            subnet_id = aws_subnet.myapp-subnet-1.id
+            route_table_id = aws_route_table.myapp-route-table.id
+        }        
+      ```
+      <img src="" width=800 />
+      
+  24. Apply changes and verify them in the AWS console:
+      ```bash
+      terraform plan
+      terraform --auto-approve
+      ```
+      <img src="" width=800 />
+      
+  25. Use the Default Route Table
+      ```bash
+      #Using Default Routing Table
+      resource "aws_default_route_table" "default-main-rtb" {
+        default_route_table_id = aws_vpc.myapp-vpc.default_route_table_id
+      
+        route {
+          cidr_block = "0.0.0.0/0"
+          gateway_id = aws_internet_gateway.myapp-igw.id
+        }
+      
+        tags = {
+          Name: "${var.env_prefix}-default-main-rtb"
+        }
+      }
+      ```
+      <img src="" width=800 />
+  26. Create a Security Group
+      ```bash
+      #Creating Security Group
+      resource "aws_security_group" "myapp-sg" {
+          name        = "myapp-sg"
+          vpc_id      = aws_vpc.myapp-vpc.id
+                    
+          #SSH ingress rule
+          #To open a port range set different values on the from_port and to_port.
+          #SSH
+          ingress {
+              from_port = 22
+              to_port = 22
+              protocol = "tcp"
+              cidr_blocks = var.my_ip
+          }
+          #Ingress rule
+          ingress {
+            from_port = 8080
+            to_port = 8080
+            protocol = "tcp"
+          
+            #It's a string list
+            cidr_blocks = ["0.0.0.0/0"]
+          }
+          
+          #Egress Rules (Exit)
+          egress {
+            #Any port
+            from_port = 0
+            to_port = 0
+            #-1 Any protocol
+            protocol = "-1"
+            cidr_blocks = ["0.0.0.0/0"]
+          }
+          
+          tags = {
+              Name: "${var.env_prefix}-MyApp-SG"
+            }
+          }                 
+      ```
+      <img src="" width=800 />
+      
+  27. Query the Latest AMI
+      ```bash
+        #Querying AMI
+        data "aws_ami" "Lastest-Amazon-Linux-image" {
+          most_recent = true
+          owners = ["137112412989"] # Amazon
+          #owners = ["amazon"] # Amazon
+        
+          filter {
+            name   = "name"
+            values = ["al2023-ami-2023.8.20250707.0-kernel-6.1-x86_64"]
+          }
+        
+          filter {
+            name   = "virtualization-type"
+            values = ["hvm"]
+          }          
+        }
+      ```
+      <img src="" width=800 />
+      
+  28. Create a Shell Script to Install Docker and NGINX
+      File: user_data_bootstrap.sh
 
-## Integrate with your tools
+      ```bash
+          #!/bin/bash
+          sudo dnf update -y
+          sudo dnf install -y docker
+          sudo systemctl enable docker
+          sudo systemctl start docker
+          sudo usermod -aG docker ec2-user
+          sleep 10
+          sudo docker run -d -p 8080:80 nginx 
+      ```
+      <img src="" width=800 />
+      
+  29. Manually create a Key Pair on AWS Console and use it in the EC2
+      <img src="" width=800 />
 
-- [ ] [Set up project integrations](https://gitlab.com/devopsbootcamp4095512/devopsbootcamp_12_terraform_aws/-/settings/integrations)
+  30. Create EC2 Instance
+      ```bash
+      #Creating EC2 instance
+      resource "aws_instance" "myapp-ec2" {
+        ami           = data.aws_ami.Lastest-Amazon-Linux-image.id
+        instance_type = var.instance_type
+      
+        #Assigning the subnet
+        subnet_id = aws_subnet.myapp-subnet-1.id
+      
+        #Assiging the Ec2 to a SG
+        vpc_security_group_ids = [aws_security_group.myapp-sg.id]
+      
+        #Assigning availability_zone
+        availability_zone = var.avail_zone
+      
+        #Assigning a public IP
+        associate_public_ip_address =  true
+      
+        #Associating SSH key manually
+        #key_name = "myapp-server-key-pair"
+    
+        tags = {
+          Name = "${var.env_prefix}-myapp-server-ec2"
+        }
+      
+        #User data bootstrap: Script to initialize EC2 instance with docker,nginx     
+        user_data = file("user_data_bootstrap.sh")
+      
+        #This ensures that every time that the user data bootstrap is modified, the EC2 is destroyed and recreated.
+        user_data_replace_on_change = true
+      }
+      ```
+      <img src="" width=800 />
+      
+  31. Create a Key Pair Using Public Key File.
+      ```bash
+        #automating aws key pair
+        resource "aws_key_pair" "ssh-key" {
+          key_name = "server-key"
+        
+          #Reading from file to get the public key
+          public_key = file(var.public_key_file_location)
+        }
+      ```
+      <img src="" width=800 />
+      
+  32. Update EC2 to Use the Automated Key
+      ```bash
+       #Associating SSH key
+       key_name = aws_key_pair.ssh-key.key_name
+      ```
+      <img src="" width=800 />
+      
+  33. Apply Changes
+      ```bash
+      terraform plan
+      terraform apply --auto-approve
+      ```
+      <img src="" width=800 />
+      
+  34. Verify EC2 Access and NGINX Page
+      ```bash
+      ```
+      <img src="" width=800 />
+      
 
-## Collaborate with your team
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
 
-## Test and Deploy
 
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
