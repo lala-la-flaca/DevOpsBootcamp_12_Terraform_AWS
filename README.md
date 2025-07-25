@@ -38,12 +38,14 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
    [Install Terraform](https://developer.hashicorp.com/terraform/install)
   
 2. Create the Project Folder
-   Create a new folder for your Terraform project and navigate into it.
+   Create a new folder for your Terraform project and add a main.tf file.
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/01%20Cretaing%20main%20terraform%20file.png" width=800 />
    
-3. Install VS Code Terraform Extension
+4. Install VS Code Terraform Extension
    Open the project in VS Code and install the official Terraform extension for syntax support.
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/02%20Visual%20studio%20install%20terraform%20plugin.png" width=800 />
    
-4. Create the providers.tf File
+6. Create the providers.tf File
    Define the required provider for AWS:
    ```bash
        terraform {
@@ -54,9 +56,10 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
         }
       }
     }
-
    ```
-5. Create the main.tf File
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/03%20defining%20providers.png" width=800 />
+   
+7. Add the provider to the main.tf file
    Add the AWS provider configuration (access keys hardcoded for demo purposes only):
    ```bash
      provider "aws" {
@@ -65,12 +68,14 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
         secret_key = "xxxxxx"
      }
    ```
-6. Initialize Terraform:
+8. Initialize Terraform:
       Run the following command to download provider plugins and initialize the working directory:
       ```bash
       terraform init
       ```
-7. Create a VPC Resource.
+      <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/04%20initializing%20terraform%20installing%20providers.png" width=800 />
+      
+9. Create a VPC Resource.
      ```bash
        resource "aws_vpc" "dev-vpc" {
          cidr_block = "10.0.0.0/16"
@@ -78,7 +83,7 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
      ```
      <img src="" width=800 />
      
-8. Add a Subnet Resource.
+10. Add a Subnet Resource.
    ```bash
      resource "aws_subnet" "myapp-subnet-1" {
         vpc_id = aws_vpc.dev-vpc.id
@@ -86,21 +91,21 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
         availability_zone = "us-east-2a"   
     }     
    ```
-   <img src="" width=800 />
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/05%20adding%20subnet%20and%20referecing%20the%20vpc.png" width=800 />
      
-9. Apply Infrastructure.
+11. Apply Infrastructure.
     ```bash
       terraform plan
       terraform apply
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/06%20applying%20resources.png" width=800 />
      
-10. Verify on AWS Console:
+12. Verify on AWS Console:
     Confirm that the VPC and subnet have been created.
  
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/09%20vpc%20has%20been%20created%20in%20AWS%20account.png" width=800 />
       
-11. Add Subnet to the default VPC:
+13. Add Subnet to the default VPC:
     ```bash
       data "aws_vpc" "existing_vpc" {
         default = true
@@ -112,9 +117,9 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
         availability_zone = "us-east-2a"  
       }    
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/10%20adding%20a%20subnet%20in%20the%20exising%20resource.png" width=800 />
       
-12. Add Tags to Resources
+14. Add Tags to Resources
     VPC:
       ```bash
         resource "aws_vpc" "dev-vpc" {
@@ -151,28 +156,28 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
         }    
       }
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/12%20adding%20tags%20to%20name%20resources.png" width=800 />
       
-13. Apply the New Configuration
+15. Apply the New Configuration
       ```bash
         terraform plan
         terraform apply
       ```
   
-14. Destroy a Specific Resource
+16. Destroy a Specific Resource
       ```bash
       terraform destroy -target aws_subnet.dev-subnet-2
       ```
-      <img src="" width=800 />
+      <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/16%20destroying%20resource%20via%20command%20terraform%20destroy.png" width=800 />
       
-15. Destroy All Resources
+17. Destroy All Resources
       ```bash
       terraform destroy
       ```
-      <img src="" width=800 />
-16. Clean Up the Project
+      <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/19%20destroy%20all%20resoruces%20cleans%20up.png" width=800 />
+18. Clean Up the Project
 
-17. Add a .gitignore file
+19. Add a .gitignore file
       ```bash
         # Local terraform directory
         .terraform/*
@@ -187,7 +192,7 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       
       <img src="" width=800 />
       
-  18. Add a terraform.tfvars File:
+  20. Add a terraform.tfvars File:
       This file stores reusable variable values:
       ```bash
         avail_zone = "us-east-2a"
@@ -195,9 +200,9 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
         subnet_cidr_block = "10.0.10.0/24"
         env_prefix = "dev"
       ```
-      <img src="" width=800 />
+      <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/20%20defining%20variable%20through%20tfvars%20file.png" width=800 />
       
-  19. Declare Variables in the main.tf file
+  21. Declare Variables in the main.tf file
       ```bash
         #Variables
         variable avail_zone {}
@@ -207,7 +212,7 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="" width=800 />
       
-  20. Use Variables in Resource Definitions:
+  22. Use Variables in Resource Definitions:
       Update the VPC and subnet blocks to use variables.
       VPC:
       ```bash
@@ -232,7 +237,7 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="" width=800 />
       
-  21. Create an Internet Gateway
+  23. Create an Internet Gateway
       ```bash
         #Creating Internet Gateway
           resource "aws_internet_gateway" "myapp-igw" {
@@ -245,7 +250,7 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="" width=800 />
       
-  22. Add a Route Table
+  24. Add a Route Table
       ```bash
 
        #Creating Routing Table
@@ -267,7 +272,7 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="" width=800 />
       
-  23. Associate the Route Table with the Subnet
+  25. Associate the Route Table with the Subnet
       ```bash
         #Associating subnets with the routing table.
         resource "aws_route_table_association" "a-rtb-subnet"{
@@ -277,14 +282,14 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="" width=800 />
       
-  24. Apply changes and verify them in the AWS console:
+  26. Apply changes and verify them in the AWS console:
       ```bash
       terraform plan
       terraform --auto-approve
       ```
       <img src="" width=800 />
       
-  25. Use the Default Route Table
+  27. Use the Default Route Table
       ```bash
       #Using Default Routing Table
       resource "aws_default_route_table" "default-main-rtb" {
@@ -301,7 +306,7 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       }
       ```
       <img src="" width=800 />
-  26. Create a Security Group
+  28. Create a Security Group
       ```bash
       #Creating Security Group
       resource "aws_security_group" "myapp-sg" {
@@ -344,7 +349,7 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="" width=800 />
       
-  27. Query the Latest AMI
+  29. Query the Latest AMI
       ```bash
         #Querying AMI
         data "aws_ami" "Lastest-Amazon-Linux-image" {
@@ -365,7 +370,7 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="" width=800 />
       
-  28. Create a Shell Script to Install Docker and NGINX
+  30. Create a Shell Script to Install Docker and NGINX
       File: user_data_bootstrap.sh
 
       ```bash
@@ -380,10 +385,10 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="" width=800 />
       
-  29. Manually create a Key Pair on AWS Console and use it in the EC2
+  31. Manually create a Key Pair on AWS Console and use it in the EC2
       <img src="" width=800 />
 
-  30. Create EC2 Instance
+  32. Create EC2 Instance
       ```bash
       #Creating EC2 instance
       resource "aws_instance" "myapp-ec2" {
@@ -418,7 +423,7 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="" width=800 />
       
-  31. Create a Key Pair Using Public Key File.
+  33. Create a Key Pair Using Public Key File.
       ```bash
         #automating aws key pair
         resource "aws_key_pair" "ssh-key" {
@@ -430,21 +435,21 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="" width=800 />
       
-  32. Update EC2 to Use the Automated Key
+  34. Update EC2 to Use the Automated Key
       ```bash
        #Associating SSH key
        key_name = aws_key_pair.ssh-key.key_name
       ```
       <img src="" width=800 />
       
-  33. Apply Changes
+  35. Apply Changes
       ```bash
       terraform plan
       terraform apply --auto-approve
       ```
       <img src="" width=800 />
       
-  34. Verify EC2 Access and NGINX Page
+  36. Verify EC2 Access and NGINX Page
       ```bash
       ```
       <img src="" width=800 />
