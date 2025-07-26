@@ -81,7 +81,6 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
          cidr_block = "10.0.0.0/16"
        }    
      ```
-     <img src="" width=800 />
      
 8. Add a Subnet Resource.
      ```bash
@@ -198,7 +197,6 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
         subnet_cidr_block = "10.0.10.0/24"
         env_prefix = "dev"
       ```
-      <img src="" width=800/>
       
   19. Declare Variables in the main.tf file
       ```bash
@@ -378,18 +376,22 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
           sleep 10
           sudo docker run -d -p 8080:80 nginx 
       ```
-      <img src="" width=800 />
       
   29. Manually create a Key Pair on AWS Console and use it in the EC2
-      <img src="" width=800 />
 
   30. Copy the file .pem to the .ssh folder
       <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/10013%20%20copy%20file%20to%20.ssh%20folder.png" width=800 />
       
   31. Assign read-only permission to the .pem file
+      ```bash
+        chmod 400 myapp-server-key-pair.pem
+      ```
       <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/10014%20assigning%20read%20only%20permission.png" width=800 />
+      <details><summary><strong> Important .PEM File Permission ❗❗❗</strong></summary>
+        If the file does not have the right permission (read-only), AWS does not allow SSH.
+      </details>
 
-  32. Create EC2 Instance
+  33. Create EC2 Instance
       ```bash
       #Creating EC2 instance
       resource "aws_instance" "myapp-ec2" {
@@ -424,20 +426,20 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/10014%20creating%20Ec2%20instance%20and%20its%20parameters.png" width=800 />
       
-  33. Apply changes and verify the EC2 instance
+  34. Apply changes and verify the EC2 instance
       ```bash
       terraform plan
       terrafom --auto-approve
       ```
       <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/10016%20Ec2%20up%20and%20running.png" width=800 />
       
-  34. SSH to the EC2 using the .pem file
+  35. SSH to the EC2 using the .pem file
       ```bash
         ssh -i ~/.ssh/my-key-server.pem ec2-user@18.224.7.198
       ```
       <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/10017%20SSH%20to%20Ec2%20using%20the%20rsa%20key%20file.png" width=800 />
       
-  35. Create a Key Pair Using Public Key File.
+  36. Create a Key Pair Using Public Key File.
       ```bash
         #automating aws key pair
         resource "aws_key_pair" "ssh-key" {
@@ -449,20 +451,20 @@ This project is part of the **Terraform module** in the **TWN DevOps Bootcamp**.
       ```
       <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/10019%20automating%20getting%20key.png" width=800 />
       
-  36. Update EC2 to Use the Automated Key
+  37. Update EC2 to Use the Automated Key
       ```bash
        #Associating SSH key
        key_name = aws_key_pair.ssh-key.key_name
       ```
       <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/10020%20associaitng%20key.png" width=800 />
       
-  37. Apply Changes
+  38. Apply Changes
       ```bash
       terraform plan
       terraform apply --auto-approve
       ```
       
-  38. Verify EC2 Access and NGINX Page
+  39. Verify EC2 Access and NGINX Page
       ```bash
         ssh ec2-user@18.217.147.160
         docker ps
