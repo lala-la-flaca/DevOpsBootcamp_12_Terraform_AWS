@@ -33,7 +33,7 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
 
 ## ⚙️ Project Configuration
 # Refactoring the previous Demo into modular components.
-1. Extract all variables to variables.tf file. This file contains all variable definitions of the main project.
+1. Extracting variables to variables.tf. Move all variable declarations to a dedicated variables.tf file in the root project directory.
     ```bash
         #Variables
         variable avail_zone {}
@@ -47,29 +47,28 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
     ```
     <img src="" width=800 />
     
-3. Extract all outputs to outputs.tf file. This file contains all the outputs of the main project.
+3. Extracting outputs to outputs.tf Move all outputs to an outputs.tf file in the root directory.
     ```bash
       output "ec2_public_ip"{
-      value = module.myapp-server.webserver_instance.public_ip
+        value = module.myapp-server.webserver_instance.public_ip
       }
     ```
     <img src="" width=800 />
     
-4. Create a new modules folder.
+4. Creating a modules directory to organize reusable components.
    ```bash
    mkdir modules
    ```
-
     <img src="" width=800 />
     
-6. Create two new subfolders: subnet and webserver subfolders.
+6. Creating subfolders for each module: subnet and webserver module.
     ```bash
     mkdir modules/subnet
     mkdir module/webserver
     ```
     <img src="" width=800 />
     
-7. Create within each subfolder the main.tf, providers.tf, variables.tf files.
+7. Creating base files in each modulemain.tf, providers.tf, variables.tf files.
     ```bash
     touch mkdir modules/subnet/main.tf
     touch mkdir modules/subnet/providers.tf
@@ -83,7 +82,7 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
     ```
     <img src="" width=800 />
     
-8. Open the subnet/main.tf file and copy and paste the subnet, internet gateway, and default routing table from the previous demo. The idea is to group components. and replace hardcoded         values into variables.
+8. Moving subnet-related resources to subnet/main.tf. Copy the VPC subnet, internet gateway, and default route table resources to modules/subnet/main.tf. Replace hardcoded values with variables.
 
    ```bash
           #Creating Subnet
@@ -121,7 +120,7 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
     ```
     <img src="" width=800 />
     
-10. Add the variables used in the subnet/main.tf file in the subnet/variables.tf file.
+10. Define subnet module variables. Add the following variables to modules/subnet/variables.tf:
     ```bash
       variable avail_zone {}
       variable subnet_cidr_block { }
@@ -131,7 +130,8 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
     ```
     <img src="" width=800 />
     
-11. Reference the module in the main.tf file to access the module components.
+11. Referencing the subnet module in main.tf. This calls the subnet module from your root main.tf file:
+
     ```bash
       #calling the subnet module
         module "myapp-subnet" {
@@ -152,7 +152,7 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
     ```
     <img src="" width=800 />
     
-12. Now group the EC2 Instance resources in the  webserver/main.tf file: security group, key_pair, Querying AMI, EC2.
+12. Move EC2-related resources to webserver/main.tf. Group all EC2 instance–related resources, including the security group, key pair, AMI query, and EC2 resource
     ```bash
       #Creating Security Group
       resource "aws_security_group" "myapp-sg" {
@@ -256,7 +256,7 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
     ```
     <img src="" width=800 />
     
-13. Create the variables for the webserver module.
+13. Define webserver module variables
     ```bash
         variable vpc_id {}
         variable my_ip {}
@@ -269,7 +269,7 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
     ```
     <img src="" width=800 />
     
-14. We export the full EC2 instance object to be able to use it in the main tf file.
+14. Export the EC2 instance object
     ```bash
             output "webserver_instance" {
             #Exporting EC2 object
@@ -278,7 +278,7 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
     ```
     <img src="" width=800 />
     
-15. Use the webserver module in the main.tf file
+15. Referencing the webserver module in main.tf
     ```bash
       #calling the web-server module
       module "myapp-server" {
@@ -305,11 +305,12 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
     ```
     <img src="" width=800 />
     
-16. To use the modules, we must initialize the module first before applying configuration.
+16. Initialize and apply Terraform configuration:
+    Initialize Terraform to load modules:
     ```bash
       terrorfm init
     ```
-17. Use terraform plan to see the changes and terraform apply
+    Run the plan and apply commands:
      ```bash
       terraform plan
       terraform --auto-aprove
