@@ -17,12 +17,12 @@ module "myapp-subnet" {
   source = "./modules/subnets"
 
   #passing values to variables in the module
-  #Value is comming from tfvars
+  #Value is coming from tfvars
   avail_zone = var.avail_zone
   subnet_cidr_block = var.subnet_cidr_block
   env_prefix = var.env_prefix
 
-  #Value comming from defined resource here
+  #Value coming from defined resource here
   vpc_id = aws_vpc.myapp-vpc.id
   default_route_table_id = aws_vpc.myapp-vpc.default_route_table_id
 }
@@ -34,7 +34,7 @@ module "myapp-server" {
   source = "./modules/webserver"
 
   #passing values to variables in the module
-  #Value is comming from tfvars
+  #Value is coming from tfvars
   avail_zone = var.avail_zone
   env_prefix = var.env_prefix
   my_ip = var.my_ip
@@ -42,10 +42,10 @@ module "myapp-server" {
   public_key_file_location = var.public_key_file_location
   instance_type = var.instance_type
 
-  #Variable comming from another module
+  #Variable coming from another module
   subnet_id = module.myapp-subnet.subnet.id  
 
-  #Value comming from defined resource here
+  #Value coming from defined resource here
   vpc_id = aws_vpc.myapp-vpc.id
 }
 

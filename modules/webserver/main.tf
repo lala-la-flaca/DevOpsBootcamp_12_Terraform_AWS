@@ -4,7 +4,7 @@ resource "aws_security_group" "myapp-sg" {
   vpc_id      = var.vpc_id
 
   #SSH ingress rule
-  # in case we need a port range we set from port= 0 to_port=22  and the range is opened
+  # To open port range set different values from_port & to_port
   ingress {
     from_port = 22
     to_port = 22
@@ -31,8 +31,6 @@ resource "aws_security_group" "myapp-sg" {
     protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
 
-    #prefix_list_ids - (Optional) List of Prefix List IDs. Any in this case
-    prefix_list_ids = []
   }
 
   tags = {
@@ -93,6 +91,6 @@ resource "aws_instance" "myapp-ec2" {
 
   user_data = file("user_data_bootstrap.sh")
 
-  #This ensures that everytime that user data bootstrap is modified the EC2 is destroyed and recreated 
+  #This ensures that everytime the user-data bootstrap is modified the EC2 is destroyed and recreated 
   user_data_replace_on_change = true
 }
