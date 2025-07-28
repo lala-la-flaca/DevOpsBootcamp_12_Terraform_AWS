@@ -252,7 +252,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
       }
     
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/12%20a%20webserver%20main%20tf%20file.png" width=800 />
     
 13. Define webserver module variables
     ```bash
