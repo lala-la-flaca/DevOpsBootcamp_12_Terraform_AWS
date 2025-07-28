@@ -3,7 +3,7 @@
 This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcamp. The goal is to refactor a monolithic Terraform configuration into reusable and maintainable modules. You will modularize the previously created Terraform project (VPC, Subnet, Security Group, EC2, etc.) by breaking it down into separate components. Each module will define one specific infrastructure resource. This approach promotes reusability, easier maintenance, and better scalability.
 
 ## 📌 Objective
-- Reconfigure ,onolithic terraform into modules.
+- Reconfigure monolithic Terraform configuration into modules.
 
 
 ## 🚀 Technologies Used
@@ -43,7 +43,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         variable public_key_file_location {}
         variable image_name {}
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/1%20extract%20all%20variables%20and%20outputs%20to%20their%20own%20files.png" width=800 />
     
 3. Extracting outputs to outputs.tf Move all outputs to an outputs.tf file in the root directory.
     ```bash
@@ -51,20 +51,20 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         value = module.myapp-server.webserver_instance.public_ip
       }
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/3%20outut%20tf%20file.png" width=800 />
     
 4. Creating a modules directory to organize reusable components.
    ```bash
    mkdir modules
    ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/4%20modules%20folder%20for%20modules.png" width=800 />
     
 6. Creating subfolders for each module: subnet and webserver module.
     ```bash
     mkdir modules/subnet
     mkdir module/webserver
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/5%20create%20modules%20each%20modules%20its%20going%20to%20have%20its%20own%20file.png" width=800 />
     
 7. Creating base files in each modulemain.tf, providers.tf, variables.tf files.
     ```bash
@@ -78,7 +78,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     touch mkdir modules/webserver/variables.tf
     touch mkdir modules/webserver/outputs.tf
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/6%20each%20module%20with%20its%20own%20varibale%20output%20proiders%20file.png" width=800 />
     
 8. Moving subnet-related resources to subnet/main.tf. Copy the VPC subnet, internet gateway, and default route table resources to modules/subnet/main.tf. Replace hardcoded values with variables.
 
@@ -138,17 +138,17 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
           source = "./modules/subnets"
         
           #passing values to variables in the module
-          #Value is comming from tfvars
+          #Value is coming from tfvars
           avail_zone = var.avail_zone
           subnet_cidr_block = var.subnet_cidr_block
           env_prefix = var.env_prefix
         
-          #Value comming from defined resource here
+          #Value coming from defined resource here
           vpc_id = aws_vpc.myapp-vpc.id
           default_route_table_id = aws_vpc.myapp-vpc.default_route_table_id
         }
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/12%20referencing%20module%20from%20main%20tf%20file.png" width=800 />
     
 12. Move EC2-related resources to webserver/main.tf. Group all EC2 instance–related resources, including the security group, key pair, AMI query, and EC2 resource
     ```bash
@@ -211,7 +211,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         }  
       }
       
-      #automating aws key pair
+      #automating AWS key pair
       resource "aws_key_pair" "ssh-key" {
         key_name = "server-key"
       
@@ -229,7 +229,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         #<module>.<name of the module in this file>.<name of the output object from the module output file>.<desired object attribute>
         subnet_id = var.subnet_id
       
-        #Assiging the Ec2 to a SG defined in this file
+        # Assigning the EC2 to an SG defined in this file
         vpc_security_group_ids = [aws_security_group.myapp-sg.id]
       
         #Assigning availability_zone
@@ -247,7 +247,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
       
         user_data = file("user_data_bootstrap.sh")
       
-        #This ensures that everytime that user data bootstrap is modified the EC2 is destroyed and recreated 
+        #This ensures that every time the user-data bootstrap is modified, the EC2 is destroyed and recreated 
         user_data_replace_on_change = true
       }
     
@@ -265,7 +265,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         variable subnet_id {}
         variable avail_zone {}
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/15%20web%20server%20varibales%20tf%20file.png" width=800 />
     
 14. Export the EC2 instance object
     ```bash
@@ -285,7 +285,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         source = "./modules/webserver"
       
         #passing values to variables in the module
-        #Value is comming from tfvars
+        #Value is coming from tfvars
         avail_zone = var.avail_zone
         env_prefix = var.env_prefix
         my_ip = var.my_ip
@@ -293,10 +293,10 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         public_key_file_location = var.public_key_file_location
         instance_type = var.instance_type
       
-        #Variable comming from another module
+        #Variable coming from another module
         subnet_id = module.myapp-subnet.subnet.id  
       
-        #Value comming from defined resource here
+        #Value coming from defined resource here
         vpc_id = aws_vpc.myapp-vpc.id
       }
 
@@ -311,5 +311,5 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     Run the plan and apply commands:
      ```bash
       terraform plan
-      terraform --auto-aprove
+      terraform --auto-approve
     ```
