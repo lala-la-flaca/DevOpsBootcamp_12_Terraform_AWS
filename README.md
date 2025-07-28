@@ -43,9 +43,9 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         variable public_key_file_location {}
         variable image_name {}
     ```
-    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/1%20extract%20all%20variables%20and%20outputs%20to%20their%20own%20files.png" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/2%20variables%20file.png" width=800 />
     
-3. Extracting outputs to outputs.tf Move all outputs to an outputs.tf file in the root directory.
+3. Extracting outputs to outputs.tf Move all outputs to outputs.tf file in the root directory.
     ```bash
       output "ec2_public_ip"{
         value = module.myapp-server.webserver_instance.public_ip
@@ -66,7 +66,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     ```
     <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/5%20create%20modules%20each%20modules%20its%20going%20to%20have%20its%20own%20file.png" width=800 />
     
-7. Creating base files in each modulemain.tf, providers.tf, variables.tf files.
+7. Creating base files in each module main.tf, providers.tf, variables.tf files.
     ```bash
     touch mkdir modules/subnet/main.tf
     touch mkdir modules/subnet/providers.tf
