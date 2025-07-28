@@ -126,7 +126,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
       variable vpc_id {}
       variable default_route_table_id {}
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/9%20adding%20existing%20a%20new%20ariables%20to%20the%20subnet%20variables%20fie.png" width=800 />
     
 11. Referencing the subnet module in main.tf. This calls the subnet module from your root main.tf file:
 
