@@ -116,7 +116,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
               }
           }    
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/17%20main%20subnet%20module.png" width=800 />
     
 10. Define subnet module variables. Add the following variables to modules/subnet/variables.tf:
     ```bash
