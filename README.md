@@ -32,3 +32,12 @@ This exercise is part of Module 12: Terraform in the Nana DevOps Bootcamp. The g
 
 
 ## ⚙️ Project Configuration
+# Refactoring the previous Demo into modular components.
+1. Extract all variables to variables.tf file. This file contains all variable definitions of the main project.
+2. Extract all outputs to outputs.tf file. This file contains all the outputs of the main project.
+3. Create a new modules folder.
+4. Create two new subfolders: subnet and webserver subfolders.
+5. Create within each subfolder the main.tf, providers.tf, variables.tf files.
+6. Open the subnet/main.tf file and copy and paste the subnet, internet gateway, and default routing table from the previous demo.
+7. Add the variables used in the subnet/main.tf file in the subnet/variables.tf file and replace hardcoded values into variables.
+8. 
