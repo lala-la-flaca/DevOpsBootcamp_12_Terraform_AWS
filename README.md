@@ -30,7 +30,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
 
 
 ## ⚙️ Project Configuration
-# Refactoring the previous Demo into modular components.
+### Refactoring the previous Demo into modular components.
 1. Extracting variables to variables.tf. Move all variable declarations to a dedicated variables.tf file in the root project directory.
     ```bash
         #Variables
