@@ -274,7 +274,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
             value = aws_instance.myapp-ec2
         }
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/13%20webserver%20output.png" width=800 />
     
 15. Referencing the webserver module in main.tf
     ```bash
@@ -301,12 +301,12 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
       }
 
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/main/Img/14%20calling%20module%20form%20main%20tf%20file.png" width=800 />
     
 16. Initialize and apply Terraform configuration:
     Initialize Terraform to load modules:
     ```bash
-      terrorfm init
+      terroform init
     ```
     Run the plan and apply commands:
      ```bash
