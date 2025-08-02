@@ -96,9 +96,10 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     <details><summary><strong>Single NAT Gateway</strong></summary>
      Enables having a shared common NAT gateway for all private subnets. All private subnets route their internet traffic through this single NAT gateway
    </details>
+   
    ```bash
-   single_nat_gateway = true
-   ```
+     single_nat_gateway = true
+    ```
 18. Enable DNS hostnames
   ```bash
     enable_dns_hostnames = true
