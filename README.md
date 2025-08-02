@@ -1,93 +1,126 @@
-# DevOpsBootcamp_12_Terraform_AWS
+# TERRAFORM & EKS
+## 📦 Demo 3
+This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcamp. This project shows how to automate the provisioning of an EKS cluster using **TERRAFORM** modules.
+## 📌 Objective
+- Automate the EKS cluster with Terraform
+
+
+## 🚀 Technologies Used
+- **Terraform**: Infrastructure as Code Tool for managing cloud resources.
+- **AWS**: Cloud Provider
+- **EC2**: Intance on AWS
+- **VPC**: Virtual Private Cloud for networking.
+- **EKS**: Manage Kubernetes cluster.
+- **Docker**: Container
+- **Git**: Version Control
+  
+   
+## 📋 Prerequisites
+- Ensure you have an AWS Account.
+- You have done the previous Terraform demo.
+  
+## 🎯 Features
+- Deploy EKS with Terraform
+  
+       
+## 🏗 Project Architecture
 
 
 
-## Getting started
+## ⚙️ Project Configuration
+### Control Plane
+1. Switch back to the master branch
+2. Clean up configuration
+3. Create a new branch
+4. Create a VPC.tf file, where you can see all available inputs
+   [Terraform EKS Module](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)
+6. Add the provider section i nthe VPC.tf file and define the desired region to use in the project
+   ```bash
+       provider "aws" {
+        region = "us-east-2"
+      }
+   ```
+8. Name the VPC and add the module initialization
+   ```bash
+     module "myapp-vpc" {
+      source  = "terraform-aws-modules/vpc/aws"
+      version = "5.1.2"
+   }  
+   ```
+   
+9. In the VPC.tf within the module section, pass the values to the input variables of the module. We are building the VPC with the minimum required variables
+   ```bash
+      name = "myapp-vpc"
+      cidr = var.vpc_cidr_block 
+   ```
+   
+   <details><summary><strong>Best Practice:</strong></summary>
+     To create at least 1 private subnet and one public subnet in each AZ.
+   </details>
+   
+10. Declare the variables in the VPC.tf file.
+  ```bash
+    variable vpc_cidr_block {}
+    variable private_subnet_cidr_blocks {}
+    variable public_subnet_cidr_blocks {}
+  ```  
+11. Define the value of the variables in the Terraform.tfvars file.
+    ```bash
+      vpc_cidr_block = "10.0.0.0/16"
+      private_subnet_cidr_blocks = ["10.0.1.0/24","10.0.2.0/24","10.0.3.0/24"]
+      public_subnet_cidr_blocks = ["10.0.4.0/24","10.0.5.0/24","10.0.6.0/24"]
+    ```
+12. Add the private and public subnets to the VPC module in the VPC.tf file
+    ```bash
+      private_subnets = var.private_subnet_cidr_blocks
+      public_subnets = var.public_subnet_cidr_blocks
+    ```
+13.  Use data outside of the module section to query the available AZs and add them dynamically depending on each region.
+     ``bash
+       data "aws_availability_zones" "azs" {}
+     ```
+14. Add the AZs variable in the vpc.tf file under the vpc module section, to store the values of available AZs. The AZs that is going to retrieve depends on the region defined in the providers section.
+    ```bash
+      azs = data.aws_availability_zones.azs.names 
+    ```
+15. Enable NAT gateway for each subnet
+    <details><summary><strong>Enable NAT Gateway</strong></summary>
+     By default, the NAT gateway is enabled for each subnet.
+   </details>
+   ```bash
+   enable_nat_gateway = true
+   ```
+    
+17. Enable single NAT gateway
+    <details><summary><strong>Single NAT Gateway</strong></summary>
+     Enables having a shared common NAT gateway for all private subnets. All private subnets route their internet traffic through this single NAT gateway
+   </details>
+   ```bash
+   single_nat_gateway = true
+   ```
+18. Enable DNS hostnames
+  ```bash
+    enable_dns_hostnames = true
+  ```
+19. Add the required tags to identify cluster resources. These tags enable the CCM (cloud controller manager) to identify the resources to be used in the EKS configuration. "myapp-eks-cluster" specifies the name of the cluster.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
+```bash
+  #VPC tag
+      tags = {
+          "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+        }
+  #Public Subnet tags with elastic load balancer (public) accessible from Internet
+ 
+      public_subnet_tags = {
+        "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+        "kubernetes.io/role/elb" = 1
+      }
+  #Private Subnet tags with internal elastic load balancer
+      private_subnet_tags = {
+        "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+        "kubernetes.io/role/internal-elb" = 1
+      }
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/devopsbootcamp4095512/devopsbootcamp_12_terraform_aws.git
-git branch -M main
-git push -uf origin main
-```
+### Worker Nodes
+### Accessing EKS Cluster using Kubectl
 
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/devopsbootcamp4095512/devopsbootcamp_12_terraform_aws/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
