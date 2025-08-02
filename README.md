@@ -32,9 +32,10 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
 1. Switch back to the master branch
 2. Clean up configuration
 3. Create a new branch
-4. Create a VPC.tf file, where you can see all available inputs
-   [Terraform EKS Module](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)
-6. Add the provider section i nthe VPC.tf file and define the desired region to use in the project
+4. Create a VPC.tf file, where you can see all available inputs of the VPC module.
+   [Terraform VPC Module](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)
+   
+6. Add the provider section in the VPC.tf file and define the desired region to use in the project
    ```bash
        provider "aws" {
         region = "us-east-2"
@@ -121,6 +122,27 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         "kubernetes.io/role/internal-elb" = 1
       }
 ```
+20. Save and initialize Terraform
+```bash
+terraform init
+```
+22. Plan and apply changes
+```bash
+terraform plan
+terraform --auto-approve
+```
+### EKS Cluster
+1. Create the EKS-cluster.tf file using the EKS cluster module
+   [Terraform EKS Module](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)
+   
+2. Add the provision instructions to the eks-cluster.tf file
+   ```bash   
+      module "eks" {
+        source  = "terraform-aws-modules/eks/aws"
+        version = "20.37.2" 
+      }   
+   ```    
+3 
 ### Worker Nodes
 ### Accessing EKS Cluster using Kubectl
 
