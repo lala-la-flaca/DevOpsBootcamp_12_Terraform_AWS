@@ -97,41 +97,44 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
      Enables having a shared common NAT gateway for all private subnets. All private subnets route their internet traffic through this single NAT gateway
    </details>
    
-   ```bash
-     single_nat_gateway = true
-    ```
+     ```bash
+       single_nat_gateway = true
+     ```
 18. Enable DNS hostnames
-  ```bash
-    enable_dns_hostnames = true
-  ```
+    ```bash
+      enable_dns_hostnames = true
+    ```
+
 19. Add the required tags to identify cluster resources. These tags enable the CCM (cloud controller manager) to identify the resources to be used in the EKS configuration. "myapp-eks-cluster" specifies the name of the cluster.
 
-```bash
-  #VPC tag
-      tags = {
-          "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
-        }
-  #Public Subnet tags with elastic load balancer (public) accessible from Internet
- 
-      public_subnet_tags = {
-        "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
-        "kubernetes.io/role/elb" = 1
-      }
-  #Private Subnet tags with internal elastic load balancer
-      private_subnet_tags = {
-        "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
-        "kubernetes.io/role/internal-elb" = 1
-      }
-```
+    ```bash
+      #VPC tag
+          tags = {
+              "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+            }
+      #Public Subnet tags with elastic load balancer (public) accessible from Internet
+     
+          public_subnet_tags = {
+            "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+            "kubernetes.io/role/elb" = 1
+          }
+      #Private Subnet tags with internal elastic load balancer
+          private_subnet_tags = {
+            "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+            "kubernetes.io/role/internal-elb" = 1
+          }
+    ```
+    
 20. Save and initialize Terraform
-```bash
-terraform init
-```
+    ```bash
+      terraform init
+    ```
 22. Plan and apply changes
-```bash
-terraform plan
-terraform --auto-approve
-```
+    ```bash
+      terraform plan
+      terraform --auto-approve
+    ```
+    
 ### EKS Cluster
 1. Create the EKS-cluster.tf file using the EKS cluster module
    [Terraform EKS Module](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)
