@@ -35,17 +35,17 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
    ```
    <img src="" width=800/>
    
-3. Clean up previous configuration
+2. Clean up the previous configuration
    
-5. Create a new branch
+3. Create a new branch
    ```bash
      git checkout -b features/eks
    ```
   
-6. Create VPC.tf file, where we are going to use the VPC module available here:  
+4. Create VPC.tf file, where we are going to use the VPC module available here:  
    🔗[Terraform VPC Module](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)
    
-7. Add the AWS provider and specify the region to use in the project. In the VPC.tf file:
+5. Add the AWS provider and specify the region to use in the project. In the VPC.tf file:
    ```bash
        provider "aws" {
         region = "us-east-2"
@@ -53,7 +53,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
    ```
   <img src="" width=800/>
   
-8. Initialize the VPC module. In the VPC.tf, add the module block
+6. Initialize the VPC module. In the VPC.tf, add the module block
    ```bash
        module "myapp-vpc" {
           source  = "terraform-aws-modules/vpc/aws"
@@ -62,7 +62,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
    ```
    <img src="" width=800/>
    
-9. Configure the name of the VPC and the CIDR block.
+7. Configure the name of the VPC and the CIDR block.
    ```bash
       name = "myapp-vpc"
       cidr = var.vpc_cidr_block 
@@ -73,7 +73,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
      Create at least one private subnet and one public subnet in each availability zone (AZ)
    </details>
    
-10. Declare variables in the VPC.tf file.
+8. Declare variables in the VPC.tf file.
   ```bash
     variable vpc_cidr_block {}
     variable private_subnet_cidr_blocks {}
@@ -81,7 +81,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
   ```
   <img src="" width=800/> 
   
-11. Assign variable values in the terraform.tfvars
+9. Assign variable values in the terraform.tfvars
     ```bash
       vpc_cidr_block = "10.0.0.0/16"
       private_subnet_cidr_blocks = ["10.0.1.0/24","10.0.2.0/24","10.0.3.0/24"]
@@ -89,20 +89,20 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     ```
     <img src="" width=800/>
     
-12. Add private and public subnetes in the vpc.tf
+10. Add private and public subnetes in the vpc.tf
     ```bash
       private_subnets = var.private_subnet_cidr_blocks
       public_subnets = var.public_subnet_cidr_blocks
     ```
     <img src="" width=800/>
     
-13.  Query available availability zones (AZs) to use them dynamically. Use the aws_availability_zones data block outside of the module section
+11.  Query available availability zones (AZs) to use them dynamically. Use the aws_availability_zones data block outside of the module section
      ```bash
         data "aws_availability_zones" "azs" {}
      ```
      <img src="" width=800/>
 
-14. Pass available AZs to the module, inside the module block in the vpc.tf:
+12. Pass available AZs to the module, inside the module block in the vpc.tf:
     ```bash
       azs = data.aws_availability_zones.azs.names 
     ```
@@ -110,7 +110,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
 
     <img src="" width=800/>
     
-15. Enable NAT Gateway for each subnet
+13. Enable NAT Gateway for each subnet
     
     <details><summary><strong>Enable NAT Gateway</strong></summary>
      By default, the NAT gateway is enabled for each subnet.
@@ -121,7 +121,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
    ```
   <img src="" width=800/>
     
-17. Enable single NAT gateway
+14. Enable single NAT gateway
     <details><summary><strong>Single NAT Gateway</strong></summary>
       Route all private subnet traffic through a shared NAT gateway to access Internet.</details>
    
@@ -130,13 +130,13 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
      ```
      <img src="" width=800/>
      
-18. Enable DNS hostnames
+15. Enable DNS hostnames
     ```bash
       enable_dns_hostnames = true
     ```
     <img src="" width=800/>
 
-19. Tag the VPC and subnets for Kubernetes and EKS. These tags allow the EKS Cloud Controller Manager (CCM) to discover and manage resources.
+16. Tag the VPC and subnets for Kubernetes and EKS. These tags allow the EKS Cloud Controller Manager (CCM) to discover and manage resources.
 
     ```bash
       #VPC tag
@@ -157,11 +157,11 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     ```
     <img src="" width=800/>
     
-20. Initialize Terraform
+17. Initialize Terraform
     ```bash
       terraform init
     ```
-22. Plan and apply changes
+18. Plan and apply changes
     ```bash
       terraform plan
       terraform --auto-approve
