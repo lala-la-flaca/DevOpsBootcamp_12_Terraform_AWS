@@ -74,12 +74,12 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
    </details>
    
 8. Declare variables in the VPC.tf file.
-  ```bash
-    variable vpc_cidr_block {}
-    variable private_subnet_cidr_blocks {}
-    variable public_subnet_cidr_blocks {}
-  ```
-  <img src="" width=800/> 
+   ```bash
+      variable vpc_cidr_block {}
+      variable private_subnet_cidr_blocks {}
+      variable public_subnet_cidr_blocks {}
+   ```
+   <img src="" width=800/> 
   
 9. Assign variable values in the terraform.tfvars
     ```bash
@@ -89,7 +89,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     ```
     <img src="" width=800/>
     
-10. Add private and public subnetes in the vpc.tf
+10. Add private and public subnets in the vpc.tf
     ```bash
       private_subnets = var.private_subnet_cidr_blocks
       public_subnets = var.public_subnet_cidr_blocks
@@ -106,7 +106,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     ```bash
       azs = data.aws_availability_zones.azs.names 
     ```
-    <details><summary><strong> Available AZsk.</strong></summary> The list of AZs depends on the region defined in the provider block. </details>
+    <details><summary><strong> Available AZs.</strong></summary> The list of AZs depends on the region defined in the provider block. </details>
 
     <img src="" width=800/>
     
@@ -117,7 +117,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
    </details>
    
    ```bash
-   enable_nat_gateway = true
+     enable_nat_gateway = true
    ```
   <img src="" width=800/>
     
