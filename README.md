@@ -183,9 +183,6 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
      }
      enable_cluster_creator_admin_permissions = true
 
-     #Makes the k8 publicly accessible from external clients
-     cluster_endpoint_public_access = true
-
    ```
 7. Apply the modules
    ```bash
@@ -198,5 +195,35 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
 9. Verify configuration on AWS
     
 
-### Accessing EKS Cluster using Kubectl
-
+### Accessing EKS Cluster using kubectl
+1. Use the AWS EKS command, which updates the kubeconfig file, so it has the correct certificate and token to access the resources.
+  ```bash
+    aws eks update-kubeconfig --name myapp-eks-cluster --region us-east-2
+  ```
+    <details><summary><strong>Pre-Requisites</strong></summary>
+         AWS CLI installed, kubectl installed, aws-iam-authenticator installed
+    </details>
+2. If you do kubectl get nodes, it times out as we must configure "public access to our cluster " to be able to reach the cluster from kubectl
+   ```bash
+     #Makes the k8 publicly accessible from external clients
+     cluster_endpoint_public_access = true
+   ```
+3. Plan and Apply changes
+   ```bash
+     terraform plan
+     terraform apply --auto-approve
+   ```
+4. Apply a simple nginx deployment
+   ```bash
+     kubectl apply -f nginx-config.yaml
+   ```
+5. Check pods
+   ```bash
+     kubectl get pod -w
+   ```
+7. Verify services
+   ```bash
+     kubectl get service
+   ```
+   
+   
