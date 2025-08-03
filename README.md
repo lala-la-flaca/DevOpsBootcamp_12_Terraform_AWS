@@ -111,10 +111,10 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     <img src="" width=800/>
     
 13. Enable NAT Gateway for each subnet
-    
+
     <details><summary><strong>Enable NAT Gateway</strong></summary>
-     By default, the NAT gateway is enabled for each subnet.
-   </details>
+       By default, the NAT gateway is enabled for each subnet.
+    </details>
    
    ```bash
      enable_nat_gateway = true
@@ -255,6 +255,7 @@ Follow these steps to configure access to your Amazon EKS cluster using kubectl.
     
 2. Enable public access to the EKS cluster. If kubectl get nodes results in a timeout, you may need to enable public access to the EKS cluster endpoint.
    In your eks-cluster.tf:
+   
    ```bash
      cluster_endpoint_public_access = true
    ```
@@ -264,25 +265,25 @@ Follow these steps to configure access to your Amazon EKS cluster using kubectl.
       
    <img src="" width=800/>
    
-3. Plan and apply the configuration
+4. Plan and apply the configuration
    ```bash
      terraform plan
      terraform apply --auto-approve
    ```
-4. Deploy a sample NGINX workload:
+5. Deploy a sample NGINX workload:
    Apply the NGINX deployment configuration:
    ```bash
      kubectl apply -f nginx-config.yaml
    ```
    <img src="" width=800/>
    
-5. Verify pods. Use the -w flag to watch pod status changes in real time:
+6. Verify pods. Use the -w flag to watch pod status changes in real time:
    ```bash
      kubectl get pod -w
    ```
    <img src="" width=800/>
    
-6. Verify services
+7. Verify services
    ```bash
      kubectl get service
    ```
