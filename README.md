@@ -244,12 +244,10 @@ Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS m
 Follow these steps to configure access to your Amazon EKS cluster using kubectl.
 
 1. Update your kubeconfig file. Use the AWS CLI to update the kubeconfig file with the correct credentials and cluster endpoint: 
-  ```bash
-    aws eks update-kubeconfig --name myapp-eks-cluster --region us-east-2
-  ```
-    <details><summary><strong>Pre-Requisites</strong></summary>
-         AWS CLI installed, kubectl installed, aws-iam-authenticator installed
-    </details>
+    ```bash
+      aws eks update-kubeconfig --name myapp-eks-cluster --region us-east-2
+    ```
+    <details><summary><strong>Pre-Requisites</strong></summary> AWS CLI installed, kubectl installed, aws-iam-authenticator installed </details>
 
     <img src="" width=800/>
     
