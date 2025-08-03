@@ -77,8 +77,8 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
       public_subnets = var.public_subnet_cidr_blocks
     ```
 13.  Use data outside of the module section to query the available AZs and add them dynamically depending on each region.
-     ``bash
-       data "aws_availability_zones" "azs" {}
+     ```bash
+        data "aws_availability_zones" "azs" {}
      ```
 14. Add the AZs variable in the vpc.tf file under the vpc module section, to store the values of available AZs. The AZs that is going to retrieve depends on the region defined in the providers section.
     ```bash
@@ -105,7 +105,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
       enable_dns_hostnames = true
     ```
 
-19. Add the required tags to identify cluster resources. These tags enable the CCM (cloud controller manager) to identify the resources to be used in the EKS configuration. "myapp-eks-cluster" specifies the name of the cluster.
+19. Add the required tags to identify cluster resources. These tags enable the CCM (Cloud Controller Manager) to identify the resources to be used in the EKS configuration. "myapp-eks-cluster" specifies the name of the cluster.
 
     ```bash
       #VPC tag
@@ -146,7 +146,57 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         version = "20.37.2" 
       }   
    ```    
-3 
-### Worker Nodes
+3. Add the cluster name and version in the module.
+   ```bash
+     #Use the same name used in the VPC section  tags.
+     cluster_name    = "myapp-eks-cluster"
+     #K8 version
+     cluster_version = "1.33"
+   ```
+ 4. Set the subnet IDs, used to deploy the worker nodes and retrieve the VPC ID to connect to this cluster
+    ```bash
+
+       #Calling attribute from the VPC module
+       #module.<name of the module>.<name of the output-attribute>
+       #Workload uses a private subnet as we do not want to expose this information to the public.
+       vpc_id     = module.myapp-vpc.vpc_id
+       subnet_ids = module.myapp-vpc.private_subnets
+    ```
+5. Set tags for reference; these are not required as the VPC tags.
+   ```bash
+     tags = {
+         environment = "development"
+         application = "myapp"
+     }
+   ```
+6. Configure the worker nodes, using the node groups
+
+   ```bash      
+     #Worker nodes: Creating Node Groups. We can define multiple node gropus inside this attribute; each group can have its name and characteristics.
+     eks_managed_node_groups = {
+         dev = {
+             instance_types = ["t2.small"]
+             min_size     = 1
+             max_size     = 3
+             desired_size = 3
+         }
+     }
+     enable_cluster_creator_admin_permissions = true
+
+     #Makes the k8 publicly accessible from external clients
+     cluster_endpoint_public_access = true
+
+   ```
+7. Apply the modules
+   ```bash
+     terraform init
+   ```
+8. Apply configuration
+   ```bash
+     terraform --auto-approve
+   ```
+9. Verify configuration on AWS
+    
+
 ### Accessing EKS Cluster using Kubectl
 
