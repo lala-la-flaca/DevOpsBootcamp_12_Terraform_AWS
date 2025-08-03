@@ -168,44 +168,50 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     ```
     <img src="" width=800/>
     
-### Creating EKS Cluster
-1. Create the EKS-cluster.tf file using the EKS cluster module
-   [Terraform EKS Module](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)
+### Creating the EKS Cluster
+Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS module:
+
+1. Create the EKS-cluster.tf file: 🔗[Terraform EKS Module](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)
    
-2. Add the provision instructions to the eks-cluster.tf file
+2. Add the  EKS module block in eks-cluster.tf:
    ```bash   
       module "eks" {
         source  = "terraform-aws-modules/eks/aws"
         version = "20.37.2" 
       }   
-   ```    
-3. Add the cluster name and version in the module.
+   ```
+   <img src="" width=800/>
+   
+3. Set the cluster name and Kubernetes version. Use the same cluster na,e as in the VPC tags
    ```bash
-     #Use the same name used in the VPC section  tags.
      cluster_name    = "myapp-eks-cluster"
-     #K8 version
      cluster_version = "1.33"
    ```
- 4. Set the subnet IDs, used to deploy the worker nodes and retrieve the VPC ID to connect to this cluster
+   <img src="" width=800/>
+   
+ 4. Set the VPC ID and private subnet IDs. Use private subnets to keep the workload internal.
     ```bash
-
-       #Calling attribute from the VPC module
-       #module.<name of the module>.<name of the output-attribute>
-       #Workload uses a private subnet as we do not want to expose this information to the public.
        vpc_id     = module.myapp-vpc.vpc_id
        subnet_ids = module.myapp-vpc.private_subnets
     ```
-5. Set tags for reference; these are not required as the VPC tags.
-   ```bash
-     tags = {
-         environment = "development"
-         application = "myapp"
-     }
-   ```
-6. Configure the worker nodes, using the node groups
+
+     <details><summary><strong>Using Output from another Module</strong></summary>
+     module.<module_name>.<output_name> is used to reference outputs from another module.</details>
+
+   <img src="" width=800/>
+    
+5. Add optional reference tags. These tags are not required by EKS but help identify resources:
+     ```bash
+       tags = {
+           environment = "development"
+           application = "myapp"
+       }
+     ```
+     <img src="" width=800/>
+     
+6. Configure managed node groups. Define worker nodes using eks_managed_node_groups. You can declare multiple groups with different configurations:
 
    ```bash      
-     #Worker nodes: Creating Node Groups. We can define multiple node gropus inside this attribute; each group can have its name and characteristics.
      eks_managed_node_groups = {
          dev = {
              instance_types = ["t2.small"]
@@ -215,17 +221,23 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
          }
      }
      enable_cluster_creator_admin_permissions = true
-
    ```
-7. Apply the modules
+   <img src="" width=800/>
+   
+7. Initialize the Terraform configuration
    ```bash
      terraform init
    ```
-8. Apply configuration
+   
+8. Apply the configuration
    ```bash
      terraform --auto-approve
    ```
-9. Verify configuration on AWS
+   
+9. Verify the cluster in the AWS Management Console
+    <img src="" width=800/>
+    <img src="" width=800/>
+    <img src="" width=800/>
     
 
 ### Accessing EKS Cluster using kubectl
