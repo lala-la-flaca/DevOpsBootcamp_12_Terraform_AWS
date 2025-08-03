@@ -241,34 +241,51 @@ Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS m
     
 
 ### Accessing EKS Cluster using kubectl
-1. Use the AWS EKS command, which updates the kubeconfig file, so it has the correct certificate and token to access the resources.
+Follow these steps to configure access to your Amazon EKS cluster using kubectl.
+
+1. Update your kubeconfig file. Use the AWS CLI to update the kubeconfig file with the correct credentials and cluster endpoint: 
   ```bash
     aws eks update-kubeconfig --name myapp-eks-cluster --region us-east-2
   ```
     <details><summary><strong>Pre-Requisites</strong></summary>
          AWS CLI installed, kubectl installed, aws-iam-authenticator installed
     </details>
-2. If you do kubectl get nodes, it times out as we must configure "public access to our cluster " to be able to reach the cluster from kubectl
+
+    <img src="" width=800/>
+    
+2. Enable public access to the EKS cluster. If kubectl get nodes results in a timeout, you may need to enable public access to the EKS cluster endpoint.
+   In your eks-cluster.tf:
    ```bash
-     #Makes the k8 publicly accessible from external clients
      cluster_endpoint_public_access = true
    ```
-3. Plan and Apply changes
+    <details><summary><strong>Access EKS from external clients </strong></summary>
+           This setting allows access to the cluster API server from external clients.
+    </details>
+      
+   <img src="" width=800/>
+   
+3. Plan and apply the configuration
    ```bash
      terraform plan
      terraform apply --auto-approve
    ```
-4. Apply a simple nginx deployment
+4. Deploy a sample NGINX workload:
+   Apply the NGINX deployment configuration:
    ```bash
      kubectl apply -f nginx-config.yaml
    ```
-5. Check pods
+   <img src="" width=800/>
+   
+5. Verify pods. Use the -w flag to watch pod status changes in real time:
    ```bash
      kubectl get pod -w
    ```
-7. Verify services
+   <img src="" width=800/>
+   
+6. Verify services
    ```bash
      kubectl get service
    ```
+   <img src="" width=800/>
    
    
