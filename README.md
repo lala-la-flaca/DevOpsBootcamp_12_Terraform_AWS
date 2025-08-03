@@ -1,4 +1,4 @@
-# TERRAFORM & EKS
+# TERRAFORM & AWS EKS
 ## 📦 Demo 3
 This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcamp. This project shows how to automate the provisioning of an EKS cluster using **TERRAFORM** modules.
 ## 📌 Objective
