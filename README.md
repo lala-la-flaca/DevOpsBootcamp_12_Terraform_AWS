@@ -52,7 +52,6 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
         region = "us-east-2"
       }
    ```
-  <img src="" width=800/>
   
 6. Initialize the VPC module. In the VPC.tf, add the module block
    ```bash
