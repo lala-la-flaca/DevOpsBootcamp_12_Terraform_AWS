@@ -80,7 +80,6 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
       variable private_subnet_cidr_blocks {}
       variable public_subnet_cidr_blocks {}
    ```
-   <img src="" width=800/> 
   
 9. Assign variable values in the terraform.tfvars
     ```bash
@@ -120,8 +119,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
    ```bash
      enable_nat_gateway = true
    ```
-  <img src="" width=800/>
-    
+
 14. Enable single NAT gateway
     <details><summary><strong>Single NAT Gateway</strong></summary>
       Route all private subnet traffic through a shared NAT gateway to access Internet.</details>
@@ -129,7 +127,6 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
      ```bash
        single_nat_gateway = true
      ```
-     <img src="" width=800/>
      
 15. Enable DNS hostnames
     ```bash
