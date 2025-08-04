@@ -263,26 +263,25 @@ Follow these steps to configure access to your Amazon EKS cluster using Kubectl.
            This setting allows access to the cluster API server from external clients.
     </details>
       
-   <img src="<img width="2252" height="1126" alt="11 makes the k8 cluster accessible from extenal clients" src="https://github.com/user-attachments/assets/cf934477-3e4a-4017-8ae7-25f820517573" />
-" width=800/>
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/11%20makes%20the%20k8%20cluster%20accessible%20from%20extenal%20clients.png" width=800/>
    
-4. Plan and apply the configuration
+3. Plan and apply the configuration
    ```bash
      terraform plan
      terraform apply --auto-approve
    ```
-5. Deploy a sample NGINX workload:
+4. Deploy a sample NGINX workload:
    Apply the NGINX deployment configuration:
    ```bash
      kubectl apply -f nginx-config.yaml
    ```
    
-6. Verify pods. Use the -w flag to watch pod status changes in real time:
+5. Verify pods. Use the -w flag to watch pod status changes in real time:
    ```bash
      kubectl get pod -w
    ```
    
-7. Verify services
+6. Verify services
    ```bash
      kubectl get service
    ```
