@@ -46,7 +46,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
 
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/2%20create%20vpctf.png" width=800 />
    
-6. Add the AWS provider and specify the region to use in the project. In the VPC.tf file:
+5. Add the AWS provider and specify the region to use in the project. In the VPC.tf file:
    ```bash
        provider "aws" {
         region = "us-east-2"
@@ -107,7 +107,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
       azs = data.aws_availability_zones.azs.names 
     ```
     <details><summary><strong> Available AZs.</strong></summary> The list of AZs depends on the region defined in the provider block. </details>
-
+    
     <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/3d%20azs.PNG" width=800/>
     
 13. Enable NAT Gateway for each subnet
@@ -172,10 +172,8 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
 Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS module:
 
 1. Create the EKS-cluster.tf file: 🔗[Terraform EKS Module](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)
-
-   <img src="" width=800 />
    
-3. Add the  EKS module block in eks-cluster.tf:
+2. Add the  EKS module block in eks-cluster.tf:
    ```bash   
       module "eks" {
         source  = "terraform-aws-modules/eks/aws"
@@ -184,14 +182,14 @@ Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS m
    ```
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/10%20init%20module.PNG" width=800/>
    
-4. Set the cluster name and Kubernetes version. Use the same cluster name as in the VPC tags
+3. Set the cluster name and Kubernetes version. Use the same cluster name as in the VPC tags
    ```bash
      cluster_name    = "myapp-eks-cluster"
      cluster_version = "1.33"
    ```
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/10%20cluster%20name%20and%20k8%20version.PNG" width=800/>
    
- 5. Set the VPC ID and private subnet IDs. Use private subnets to keep the workload internal.
+ 4. Set the VPC ID and private subnet IDs. Use private subnets to keep the workload internal.
     ```bash
        vpc_id     = module.myapp-vpc.vpc_id
        subnet_ids = module.myapp-vpc.private_subnets
