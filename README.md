@@ -33,7 +33,6 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
    ```bash
      git checkout main
    ```
-   <img src="" width=800/>
    
 2. Clean up the previous configuration
    
@@ -44,8 +43,10 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
   
 4. Create VPC.tf file, where we are going to use the VPC module available here:  
    🔗[Terraform VPC Module](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)
+
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/2%20create%20vpctf.png" width=800 />
    
-5. Add the AWS provider and specify the region to use in the project. In the VPC.tf file:
+6. Add the AWS provider and specify the region to use in the project. In the VPC.tf file:
    ```bash
        provider "aws" {
         region = "us-east-2"
@@ -60,14 +61,14 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
           version = "5.1.2"
        }  
    ```
-   <img src="" width=800/>
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/1%20copy%20th%20einit%20instrctions%20to%20use%20the%20vpc%20module.png" width=800/>
    
 7. Configure the name of the VPC and the CIDR block.
    ```bash
       name = "myapp-vpc"
       cidr = var.vpc_cidr_block 
    ```
-   <img src="" width=800/>
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/3%20b%20name%20and%20network.PNG" width=800/>
    
    <details><summary><strong>Best Practice:</strong></summary>
      Create at least one private subnet and one public subnet in each availability zone (AZ)
@@ -87,20 +88,20 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
       private_subnet_cidr_blocks = ["10.0.1.0/24","10.0.2.0/24","10.0.3.0/24"]
       public_subnet_cidr_blocks = ["10.0.4.0/24","10.0.5.0/24","10.0.6.0/24"]
     ```
-    <img src="" width=800/>
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/6%20variables%20valeus.png" width=800/>
     
 10. Add private and public subnets in the vpc.tf
     ```bash
       private_subnets = var.private_subnet_cidr_blocks
       public_subnets = var.public_subnet_cidr_blocks
     ```
-    <img src="" width=800/>
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/3c%20subnets.PNG" width=800/>
     
 11.  Query available availability zones (AZs) to use them dynamically. Use the aws_availability_zones data block outside of the module section
      ```bash
         data "aws_availability_zones" "azs" {}
      ```
-     <img src="" width=800/>
+     <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/3e.PNG" width=800/>
 
 12. Pass available AZs to the module, inside the module block in the vpc.tf:
     ```bash
@@ -108,7 +109,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     ```
     <details><summary><strong> Available AZs.</strong></summary> The list of AZs depends on the region defined in the provider block. </details>
 
-    <img src="" width=800/>
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/3d%20azs.PNG" width=800/>
     
 13. Enable NAT Gateway for each subnet
 
@@ -134,7 +135,7 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     ```bash
       enable_dns_hostnames = true
     ```
-    <img src="" width=800/>
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/7%20enable%20dns%20hostnames.png" width=800/>
 
 16. Tag the VPC and subnets for Kubernetes and EKS. These tags allow the EKS Cloud Controller Manager (CCM) to discover and manage resources.
 
@@ -155,18 +156,20 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
             "kubernetes.io/role/internal-elb" = 1
           }
     ```
-    <img src="" width=800/>
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/8%20ttags%20to%20hel%20ccm%20to%20know%20where%20it%20should%20connect%20to.png" width=800/>
     
 17. Initialize Terraform
     ```bash
       terraform init
     ```
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/9%20installing%20new%20module.png" width=800 />
+    
 18. Plan and apply changes
     ```bash
       terraform plan
       terraform --auto-approve
     ```
-    <img src="" width=800/>
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/applied%20eks.png" width=800/>
     
 ### Creating the EKS Cluster
 Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS module:
