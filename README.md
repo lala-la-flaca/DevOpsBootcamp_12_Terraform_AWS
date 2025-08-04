@@ -172,24 +172,26 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
 Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS module:
 
 1. Create the EKS-cluster.tf file: 🔗[Terraform EKS Module](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)
+
+   <img src="" width=800 />
    
-2. Add the  EKS module block in eks-cluster.tf:
+3. Add the  EKS module block in eks-cluster.tf:
    ```bash   
       module "eks" {
         source  = "terraform-aws-modules/eks/aws"
         version = "20.37.2" 
       }   
    ```
-   <img src="" width=800/>
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/10%20init%20module.PNG" width=800/>
    
-3. Set the cluster name and Kubernetes version. Use the same cluster na,e as in the VPC tags
+4. Set the cluster name and Kubernetes version. Use the same cluster name as in the VPC tags
    ```bash
      cluster_name    = "myapp-eks-cluster"
      cluster_version = "1.33"
    ```
-   <img src="" width=800/>
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/10%20cluster%20name%20and%20k8%20version.PNG" width=800/>
    
- 4. Set the VPC ID and private subnet IDs. Use private subnets to keep the workload internal.
+ 5. Set the VPC ID and private subnet IDs. Use private subnets to keep the workload internal.
     ```bash
        vpc_id     = module.myapp-vpc.vpc_id
        subnet_ids = module.myapp-vpc.private_subnets
@@ -198,7 +200,7 @@ Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS m
      <details><summary><strong>Using Output from another Module</strong></summary>
      module.<module_name>.<output_name> is used to reference outputs from another module.</details>
 
-   <img src="" width=800/>
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/10%20vpc%20id%20and%20usbnets.PNG" width=800/>
     
 5. Add optional reference tags. These tags are not required by EKS but help identify resources:
      ```bash
@@ -207,7 +209,7 @@ Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS m
            application = "myapp"
        }
      ```
-     <img src="" width=800/>
+     <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/10%20tags.PNG" width=800/>
      
 6. Configure managed node groups. Define worker nodes using eks_managed_node_groups. You can declare multiple groups with different configurations:
 
@@ -222,7 +224,7 @@ Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS m
      }
      enable_cluster_creator_admin_permissions = true
    ```
-   <img src="" width=800/>
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/10%20worker%20node%20smangaed%20node%20group.PNG" width=800/>
    
 7. Initialize the Terraform configuration
    ```bash
@@ -231,17 +233,17 @@ Follow these steps to create an Amazon EKS cluster using the Terraform AWS EKS m
    
 8. Apply the configuration
    ```bash
+     terraform plan
      terraform --auto-approve
    ```
    
 9. Verify the cluster in the AWS Management Console
-    <img src="" width=800/>
-    <img src="" width=800/>
-    <img src="" width=800/>
-    
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/instances.png" width=800/>
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/loadbalancer%20created%20in%20all%203%20az.png" width=800/>
 
-### Accessing EKS Cluster using kubectl
-Follow these steps to configure access to your Amazon EKS cluster using kubectl.
+
+### Accessing EKS Cluster using Kubectl
+Follow these steps to configure access to your Amazon EKS cluster using Kubectl.
 
 1. Update your kubeconfig file. Use the AWS CLI to update the kubeconfig file with the correct credentials and cluster endpoint: 
     ```bash
@@ -249,7 +251,7 @@ Follow these steps to configure access to your Amazon EKS cluster using kubectl.
     ```
     <details><summary><strong>Pre-Requisites</strong></summary> AWS CLI installed, kubectl installed, aws-iam-authenticator installed </details>
 
-    <img src="" width=800/>
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/connecting%20to%20eks%20cluster.png" width=800/>
     
 2. Enable public access to the EKS cluster. If kubectl get nodes results in a timeout, you may need to enable public access to the EKS cluster endpoint.
    In your eks-cluster.tf:
@@ -261,7 +263,8 @@ Follow these steps to configure access to your Amazon EKS cluster using kubectl.
            This setting allows access to the cluster API server from external clients.
     </details>
       
-   <img src="" width=800/>
+   <img src="<img width="2252" height="1126" alt="11 makes the k8 cluster accessible from extenal clients" src="https://github.com/user-attachments/assets/cf934477-3e4a-4017-8ae7-25f820517573" />
+" width=800/>
    
 4. Plan and apply the configuration
    ```bash
@@ -273,18 +276,16 @@ Follow these steps to configure access to your Amazon EKS cluster using kubectl.
    ```bash
      kubectl apply -f nginx-config.yaml
    ```
-   <img src="" width=800/>
    
 6. Verify pods. Use the -w flag to watch pod status changes in real time:
    ```bash
      kubectl get pod -w
    ```
-   <img src="" width=800/>
    
 7. Verify services
    ```bash
      kubectl get service
    ```
-   <img src="" width=800/>
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_12_Terraform_AWS/blob/feature/eks/Img/lb%20and%20pods.png" width=800/>
    
    
