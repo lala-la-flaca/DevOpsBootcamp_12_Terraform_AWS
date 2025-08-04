@@ -115,10 +115,10 @@ This exercise is part of **Module 12**: **Terraform** in the Nana DevOps Bootcam
     <details><summary><strong>Enable NAT Gateway</strong></summary>
        By default, the NAT gateway is enabled for each subnet.
     </details>
-   
-   ```bash
-     enable_nat_gateway = true
-   ```
+    
+    ```bash
+      enable_nat_gateway = true
+    ```
 
 14. Enable single NAT gateway
     <details><summary><strong>Single NAT Gateway</strong></summary>
